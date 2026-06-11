@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://dxhpnsrrimimb"]
+
+[ext_resource type="Texture2D" uid="uid://crn5smhbjcr6n" path="res://Assets/grid.png" id="1_wtcfe"]
+
+[node name="Board" type="Sprite2D" unique_id=1868274189]
+texture = ExtResource("1_wtcfe")
