@@ -22,6 +22,7 @@ border_width_right = 2
 border_width_bottom = 2
 
 [node name="GameOverMenu" type="CanvasLayer" unique_id=1157146149]
+process_mode = 2
 script = ExtResource("1_14ib6")
 
 [node name="GameOverPanel" type="Panel" parent="." unique_id=1852072748]
@@ -57,4 +58,5 @@ theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxFlat_14ib6")
 text = "Play Again"
 
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="pressed" from="RestartButton" to="." method="_on_restart_button_pressed"]

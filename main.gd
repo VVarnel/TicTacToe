@@ -62,9 +62,13 @@ func _input(event: InputEvent) -> void:
 					print(grid_data)
 
 func new_game():
+	$Confetti_green_left.emitting = false
+	$Confetti_green_right.emitting = false
+	
 	player = 1
 	winner = 0
 	moves = 0
+	
 	grid_data = [
 		[0,0,0],
 		[0,0,0],
@@ -106,7 +110,7 @@ func check_win():
 		row_sum = grid_data[i][0] + grid_data[i][1] + grid_data[i][2]
 		col_sum = grid_data[0][i] + grid_data[1][i] + grid_data[2][i]
 		diagonal1_sum = grid_data[0][0] + grid_data[1][1] + grid_data[2][2]
-		diagonal1_sum = grid_data[0][2] + grid_data[1][1] + grid_data[2][0]
+		diagonal2_sum = grid_data[0][2] + grid_data[1][1] + grid_data[2][0]
 		
 		#check if ether player has all of the marker in one line
 		if row_sum == 3 or col_sum == 3 or diagonal1_sum == 3 or diagonal2_sum == 3:
@@ -119,3 +123,14 @@ func check_win():
 
 func _on_game_over_menu_restart() -> void:
 	new_game()
+
+
+
+
+func _on_game_over_menu_visibility() -> void:
+	if winner == 1:
+		$Confetti_green_left.emitting = true
+		$Confetti_green_right.emitting = true
+	elif winner == -1:
+		$Confetti_red_left.emitting = true
+		$Confetti_red_right.emitting = true
