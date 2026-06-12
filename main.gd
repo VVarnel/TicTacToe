@@ -3,6 +3,9 @@ extends Node
 @export var circle_scene: PackedScene
 @export var cross_scene: PackedScene
 
+
+var cross_win_count: int
+var circle_win_count: int
 var player: int
 var winner: int
 var moves: int
@@ -16,7 +19,8 @@ var row_sum: int
 var col_sum: int
 var diagonal1_sum: int
 var diagonal2_sum: int
-
+var score_label_Cross
+var score_label_Circle
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -25,8 +29,10 @@ func _ready() -> void:
 	cell_size = board_size / 3
 	#get coordinates of small panel on right side window
 	player_panel_pos = $PlayerPanel.get_position()
+	score_label_Cross = $PlayerScores/MarginContainer/VBoxContainer/HBoxContainer_Cross/CrossScore
+	score_label_Circle = $PlayerScores/MarginContainer/VBoxContainer/HBoxContainer_Circle/CircleScore
 	new_game()
-
+	update_player_score()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
@@ -47,8 +53,12 @@ func _input(event: InputEvent) -> void:
 						get_tree().paused = true
 						$GameOverMenu.show()
 						if winner == 1:
+							circle_win_count += 1
+							update_player_score()
 							$GameOverMenu.get_node("ResultLabel").text = "Player 1 Wins!"
 						elif winner == -1:
+							cross_win_count += 1
+							update_player_score()
 							$GameOverMenu.get_node("ResultLabel").text = "Player 2 Wins!"
 					#check if the boared has been filed
 					elif moves == 9:
@@ -64,10 +74,12 @@ func _input(event: InputEvent) -> void:
 func new_game():
 	$Confetti_green_left.emitting = false
 	$Confetti_green_right.emitting = false
+	$Confetti_red_left.emitting = false
+	$Confetti_red_right.emitting = false
 	
 	player = 1
 	winner = 0
-	moves = 0
+	moves = 0	
 	
 	grid_data = [
 		[0,0,0],
@@ -123,14 +135,27 @@ func check_win():
 
 func _on_game_over_menu_restart() -> void:
 	new_game()
-
-
-
+	$Confetti_green_left.hide()
+	$Confetti_green_right.hide()
+	$Confetti_red_left.hide()
+	$Confetti_red_right.hide()
 
 func _on_game_over_menu_visibility() -> void:
 	if winner == 1:
 		$Confetti_green_left.emitting = true
 		$Confetti_green_right.emitting = true
+		$Confetti_green_left.show()
+		$Confetti_green_right.show()
+		$Confetti_green_left.restart()
+		$Confetti_green_right.restart()
 	elif winner == -1:
+		$Confetti_red_left.show()
+		$Confetti_red_right.show()
+		$Confetti_red_left.restart()
+		$Confetti_red_right.restart()
 		$Confetti_red_left.emitting = true
 		$Confetti_red_right.emitting = true
+
+func update_player_score():
+	score_label_Circle.text = "%d" % circle_win_count
+	score_label_Cross.text = "%d" % cross_win_count

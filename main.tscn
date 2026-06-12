@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://dxhpnsrrimimb" path="res://Board.tscn" id="2_h2yge"]
 [ext_resource type="PackedScene" uid="uid://mr882aviyvia" path="res://Cross.tscn" id="3_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://c5cs5h88abqqy" path="res://game_over_menu.tscn" id="5_lquwl"]
+[ext_resource type="Texture2D" uid="uid://dy1txa4iw2ldj" path="res://Assets/circle.png" id="6_272bh"]
+[ext_resource type="Texture2D" uid="uid://b02u43ptx6kjf" path="res://Assets/cross.png" id="7_5vw27"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1bvp3"]
 bg_color = Color(0, 0.6666667, 0.8039216, 1)
@@ -24,6 +26,12 @@ corner_radius_bottom_left = 10
 shadow_size = 5
 shadow_offset = Vector2(5, 5)
 
+[sub_resource type="Gradient" id="Gradient_272bh"]
+colors = PackedColorArray(0, 1, 0.3529412, 1, 1, 1, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5vw27"]
+gradient = SubResource("Gradient_272bh")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_lquwl"]
 particle_flag_disable_z = true
 direction = Vector3(0, 1, 0)
@@ -33,7 +41,13 @@ initial_velocity_max = 50.0
 gravity = Vector3(-80, -100, 0)
 scale_min = 5.0
 scale_max = 20.0
-color = Color(0, 1, 0.3529412, 1)
+color_ramp = SubResource("GradientTexture1D_5vw27")
+
+[sub_resource type="Gradient" id="Gradient_5vw27"]
+colors = PackedColorArray(0, 1, 0, 1, 1, 1, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_kek77"]
+gradient = SubResource("Gradient_5vw27")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_7mycd"]
 particle_flag_disable_z = true
@@ -44,7 +58,13 @@ initial_velocity_max = 50.0
 gravity = Vector3(80, -100, 0)
 scale_min = 5.0
 scale_max = 20.0
-color = Color(0, 1, 0.3529412, 1)
+color_ramp = SubResource("GradientTexture1D_kek77")
+
+[sub_resource type="Gradient" id="Gradient_kek77"]
+colors = PackedColorArray(1, 0, 0, 1, 0.39215687, 0, 0.27450982, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4c57u"]
+gradient = SubResource("Gradient_kek77")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_272bh"]
 particle_flag_disable_z = true
@@ -55,7 +75,13 @@ initial_velocity_max = 50.0
 gravity = Vector3(-80, -100, 0)
 scale_min = 5.0
 scale_max = 20.0
-color = Color(1, 0.019607844, 0, 1)
+color_ramp = SubResource("GradientTexture1D_4c57u")
+
+[sub_resource type="Gradient" id="Gradient_4c57u"]
+colors = PackedColorArray(1, 0, 0, 1, 0.39215687, 0, 0.27450982, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_efxa6"]
+gradient = SubResource("Gradient_4c57u")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5vw27"]
 particle_flag_disable_z = true
@@ -66,7 +92,20 @@ initial_velocity_max = 50.0
 gravity = Vector3(80, -100, 0)
 scale_min = 5.0
 scale_max = 20.0
-color = Color(1, 0.019607844, 0, 1)
+color_ramp = SubResource("GradientTexture1D_efxa6")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7mycd"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_size = 5
+shadow_offset = Vector2(5, 5)
 
 [node name="Main" type="Node" unique_id=114863305]
 process_mode = 1
@@ -75,8 +114,8 @@ circle_scene = ExtResource("2_1bvp3")
 cross_scene = ExtResource("3_1bvp3")
 
 [node name="Board" parent="." unique_id=1868274189 instance=ExtResource("2_h2yge")]
-position = Vector2(299.5, 300)
-scale = Vector2(0.99833333, 1)
+position = Vector2(300, 300)
+scale = Vector2(0.998, 1)
 
 [node name="SidePanel" type="Panel" parent="." unique_id=210672077]
 custom_minimum_size = Vector2(300, 600)
@@ -110,47 +149,107 @@ process_mode = 3
 
 [node name="Confetti_green_right" type="GPUParticles2D" parent="." unique_id=201471873]
 process_mode = 3
+z_index = 1
 position = Vector2(600, 600)
 emitting = false
 amount = 100
 lifetime = 3.0
 one_shot = true
-explosiveness = 0.1
+explosiveness = 0.5
 randomness = 0.5
 process_material = SubResource("ParticleProcessMaterial_lquwl")
 
 [node name="Confetti_green_left" type="GPUParticles2D" parent="." unique_id=403617158]
 process_mode = 3
+z_index = 1
 position = Vector2(0, 600)
 emitting = false
 amount = 100
 lifetime = 3.0
 one_shot = true
-explosiveness = 0.1
+explosiveness = 0.5
 randomness = 0.5
 process_material = SubResource("ParticleProcessMaterial_7mycd")
 
 [node name="Confetti_red_right" type="GPUParticles2D" parent="." unique_id=246255495]
 process_mode = 3
+z_index = 1
 position = Vector2(600, 600)
 emitting = false
 amount = 100
 lifetime = 3.0
 one_shot = true
-explosiveness = 0.1
+explosiveness = 0.5
 randomness = 0.5
 process_material = SubResource("ParticleProcessMaterial_272bh")
 
 [node name="Confetti_red_left" type="GPUParticles2D" parent="." unique_id=764715010]
 process_mode = 3
+z_index = 1
 position = Vector2(0, 600)
 emitting = false
 amount = 100
 lifetime = 3.0
 one_shot = true
-explosiveness = 0.1
+explosiveness = 0.5
 randomness = 0.5
 process_material = SubResource("ParticleProcessMaterial_5vw27")
+
+[node name="PlayerScores" type="PanelContainer" parent="." unique_id=1795271637]
+anchors_preset = -1
+anchor_left = 0.72200006
+anchor_top = 0.73700005
+anchor_right = 0.9710001
+anchor_bottom = 0.92700005
+offset_left = 0.19995117
+offset_top = 7.7999573
+offset_right = -104.900085
+offset_bottom = 17.799988
+theme_override_styles/panel = SubResource("StyleBoxFlat_7mycd")
+
+[node name="MarginContainer" type="MarginContainer" parent="PlayerScores" unique_id=1968640157]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PlayerScores/MarginContainer" unique_id=887291733]
+layout_mode = 2
+
+[node name="HBoxContainer_Circle" type="HBoxContainer" parent="PlayerScores/MarginContainer/VBoxContainer" unique_id=806162798]
+layout_mode = 2
+
+[node name="TextureRect_Circle" type="TextureRect" parent="PlayerScores/MarginContainer/VBoxContainer/HBoxContainer_Circle" unique_id=814105283]
+custom_minimum_size = Vector2(55, 0)
+layout_mode = 2
+texture = ExtResource("6_272bh")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CircleScore" type="Label" parent="PlayerScores/MarginContainer/VBoxContainer/HBoxContainer_Circle" unique_id=345092320]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_direction = 2
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+vertical_alignment = 1
+
+[node name="HBoxContainer_Cross" type="HBoxContainer" parent="PlayerScores/MarginContainer/VBoxContainer" unique_id=1053274681]
+layout_mode = 2
+
+[node name="TextureRect_Cross" type="TextureRect" parent="PlayerScores/MarginContainer/VBoxContainer/HBoxContainer_Cross" unique_id=454516571]
+custom_minimum_size = Vector2(55, 0)
+layout_mode = 2
+texture = ExtResource("7_5vw27")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CrossScore" type="Label" parent="PlayerScores/MarginContainer/VBoxContainer/HBoxContainer_Cross" unique_id=50810251]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(50, 50)
+layout_direction = 2
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+vertical_alignment = 1
 
 [connection signal="restart" from="GameOverMenu" to="." method="_on_game_over_menu_restart"]
 [connection signal="visibility" from="GameOverMenu" to="." method="_on_game_over_menu_visibility"]
