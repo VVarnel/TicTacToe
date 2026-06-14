@@ -107,6 +107,32 @@ corner_radius_bottom_left = 10
 shadow_size = 5
 shadow_offset = Vector2(5, 5)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_272bh"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_size = 5
+shadow_offset = Vector2(5, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5vw27"]
+bg_color = Color(1, 0.99607843, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_size = 5
+shadow_offset = Vector2(5, 5)
+
 [node name="Main" type="Node" unique_id=114863305]
 process_mode = 1
 script = ExtResource("1_0xm2m")
@@ -147,7 +173,10 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_lquwl")
 [node name="GameOverMenu" parent="." unique_id=1157146149 instance=ExtResource("5_lquwl")]
 process_mode = 3
 
-[node name="Confetti_green_right" type="GPUParticles2D" parent="." unique_id=201471873]
+[node name="Confetti_CanvasLayer" type="CanvasLayer" parent="." unique_id=1397139173]
+layer = 2
+
+[node name="Confetti_green_right" type="GPUParticles2D" parent="Confetti_CanvasLayer" unique_id=201471873]
 process_mode = 3
 z_index = 1
 position = Vector2(600, 600)
@@ -155,11 +184,11 @@ emitting = false
 amount = 100
 lifetime = 3.0
 one_shot = true
-explosiveness = 0.5
+explosiveness = 1.0
 randomness = 0.5
 process_material = SubResource("ParticleProcessMaterial_lquwl")
 
-[node name="Confetti_green_left" type="GPUParticles2D" parent="." unique_id=403617158]
+[node name="Confetti_green_left" type="GPUParticles2D" parent="Confetti_CanvasLayer" unique_id=403617158]
 process_mode = 3
 z_index = 1
 position = Vector2(0, 600)
@@ -167,11 +196,11 @@ emitting = false
 amount = 100
 lifetime = 3.0
 one_shot = true
-explosiveness = 0.5
+explosiveness = 1.0
 randomness = 0.5
 process_material = SubResource("ParticleProcessMaterial_7mycd")
 
-[node name="Confetti_red_right" type="GPUParticles2D" parent="." unique_id=246255495]
+[node name="Confetti_red_right" type="GPUParticles2D" parent="Confetti_CanvasLayer" unique_id=246255495]
 process_mode = 3
 z_index = 1
 position = Vector2(600, 600)
@@ -179,11 +208,11 @@ emitting = false
 amount = 100
 lifetime = 3.0
 one_shot = true
-explosiveness = 0.5
+explosiveness = 1.0
 randomness = 0.5
 process_material = SubResource("ParticleProcessMaterial_272bh")
 
-[node name="Confetti_red_left" type="GPUParticles2D" parent="." unique_id=764715010]
+[node name="Confetti_red_left" type="GPUParticles2D" parent="Confetti_CanvasLayer" unique_id=764715010]
 process_mode = 3
 z_index = 1
 position = Vector2(0, 600)
@@ -191,7 +220,7 @@ emitting = false
 amount = 100
 lifetime = 3.0
 one_shot = true
-explosiveness = 0.5
+explosiveness = 1.0
 randomness = 0.5
 process_material = SubResource("ParticleProcessMaterial_5vw27")
 
@@ -201,10 +230,11 @@ anchor_left = 0.72200006
 anchor_top = 0.73700005
 anchor_right = 0.9710001
 anchor_bottom = 0.92700005
-offset_left = 0.19995117
+offset_left = 40.19995
 offset_top = 7.7999573
-offset_right = -104.900085
-offset_bottom = 17.799988
+offset_right = -63.900085
+offset_bottom = 18.799988
+grow_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_7mycd")
 
 [node name="MarginContainer" type="MarginContainer" parent="PlayerScores" unique_id=1968640157]
@@ -251,5 +281,17 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 40
 vertical_alignment = 1
 
+[node name="Back_To_Menu" type="Button" parent="." unique_id=1588044787]
+offset_left = 690.0
+offset_top = 50.0
+offset_right = 810.0
+offset_bottom = 83.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_272bh")
+theme_override_styles/hover = SubResource("StyleBoxFlat_5vw27")
+text = "Back to menu"
+
 [connection signal="restart" from="GameOverMenu" to="." method="_on_game_over_menu_restart"]
 [connection signal="visibility" from="GameOverMenu" to="." method="_on_game_over_menu_visibility"]
+[connection signal="pressed" from="Back_To_Menu" to="." method="_on_back_to_menu_pressed"]

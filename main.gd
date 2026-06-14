@@ -72,10 +72,10 @@ func _input(event: InputEvent) -> void:
 					print(grid_data)
 
 func new_game():
-	$Confetti_green_left.emitting = false
-	$Confetti_green_right.emitting = false
-	$Confetti_red_left.emitting = false
-	$Confetti_red_right.emitting = false
+	$Confetti_CanvasLayer/Confetti_green_left.emitting = false
+	$Confetti_CanvasLayer/Confetti_green_right.emitting = false
+	$Confetti_CanvasLayer/Confetti_red_left.emitting = false
+	$Confetti_CanvasLayer/Confetti_red_right.emitting = false
 	
 	player = 1
 	winner = 0
@@ -135,27 +135,36 @@ func check_win():
 
 func _on_game_over_menu_restart() -> void:
 	new_game()
-	$Confetti_green_left.hide()
-	$Confetti_green_right.hide()
-	$Confetti_red_left.hide()
-	$Confetti_red_right.hide()
+	$Confetti_CanvasLayer/Confetti_green_left.hide()
+	$Confetti_CanvasLayer/Confetti_green_right.hide()
+	$Confetti_CanvasLayer/Confetti_red_left.hide()
+	$Confetti_CanvasLayer/Confetti_red_right.hide()
 
 func _on_game_over_menu_visibility() -> void:
 	if winner == 1:
-		$Confetti_green_left.emitting = true
-		$Confetti_green_right.emitting = true
-		$Confetti_green_left.show()
-		$Confetti_green_right.show()
-		$Confetti_green_left.restart()
-		$Confetti_green_right.restart()
+		$Confetti_CanvasLayer/Confetti_green_left.emitting = true
+		$Confetti_CanvasLayer/Confetti_green_right.emitting = true
+		$Confetti_CanvasLayer/Confetti_green_left.show()
+		$Confetti_CanvasLayer/Confetti_green_right.show()
+		$Confetti_CanvasLayer/Confetti_green_left.restart()
+		$Confetti_CanvasLayer/Confetti_green_right.restart()
 	elif winner == -1:
-		$Confetti_red_left.show()
-		$Confetti_red_right.show()
-		$Confetti_red_left.restart()
-		$Confetti_red_right.restart()
-		$Confetti_red_left.emitting = true
-		$Confetti_red_right.emitting = true
+		$Confetti_CanvasLayer/Confetti_red_left.show()
+		$Confetti_CanvasLayer/Confetti_red_right.show()
+		$Confetti_CanvasLayer/Confetti_red_left.restart()
+		$Confetti_CanvasLayer/Confetti_red_right.restart()
+		$Confetti_CanvasLayer/Confetti_red_left.emitting = true
+		$Confetti_CanvasLayer/Confetti_red_right.emitting = true
 
 func update_player_score():
 	score_label_Circle.text = "%d" % circle_win_count
 	score_label_Cross.text = "%d" % cross_win_count
+
+func back_to_menu():
+	get_tree().change_scene_to_file(
+		'res://main_menu.tscn'
+	)
+
+func _on_back_to_menu_pressed() -> void:
+	back_to_menu()
+	

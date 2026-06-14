@@ -1,0 +1,85 @@
+[gd_scene format=3 uid="uid://cwfdt4ywuus5t"]
+
+[ext_resource type="Script" uid="uid://cx6lscr527apt" path="res://MainMenu.gd" id="1_06t4h"]
+[ext_resource type="PackedScene" uid="uid://c6s6mebm4q6eo" path="res://main_menu_drop_circle.tscn" id="2_fu7sn"]
+[ext_resource type="PackedScene" uid="uid://b62e1lixd8hdw" path="res://main_menu_drop_cross.tscn" id="3_jix8l"]
+
+[sub_resource type="Curve2D" id="Curve2D_glbon"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 898, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 2
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_fu7sn"]
+b = Vector2(900, 0)
+
+[node name="MainMenu" type="Control" unique_id=1944712227]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_06t4h")
+sprite_spawn_scenes = Array[PackedScene]([ExtResource("2_fu7sn"), ExtResource("3_jix8l")])
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2055168234]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05882353, 0.05882353, 0.078431375, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="ColorRect" unique_id=842488656]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ColorRect/CenterContainer" unique_id=1563719558]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/CenterContainer/VBoxContainer" unique_id=216022627]
+layout_mode = 2
+
+[node name="Play vs friends" type="Button" parent="ColorRect/CenterContainer/VBoxContainer/HBoxContainer" unique_id=640084599]
+z_index = 1
+layout_mode = 2
+text = "Play vs friends"
+
+[node name="Play vs bots" type="Button" parent="ColorRect/CenterContainer/VBoxContainer/HBoxContainer" unique_id=1579123599]
+z_index = 1
+layout_mode = 2
+text = "Play vs Bot"
+
+[node name="Exit" type="Button" parent="ColorRect/CenterContainer/VBoxContainer" unique_id=1965207492]
+z_index = 1
+layout_mode = 2
+text = "Exit
+"
+
+[node name="SpriteSpawnPath" type="Path2D" parent="." unique_id=777507546]
+position = Vector2(0, -80)
+curve = SubResource("Curve2D_glbon")
+
+[node name="SpritePathFollow" type="PathFollow2D" parent="SpriteSpawnPath" unique_id=1223556940]
+position = Vector2(898, 0)
+rotation = 3.1415927
+
+[node name="SpawnTimer" type="Timer" parent="." unique_id=1689240910]
+wait_time = 0.5
+autostart = true
+
+[node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=100148463]
+position = Vector2(0, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1145433534]
+shape = SubResource("SegmentShape2D_fu7sn")
+
+[connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/HBoxContainer/Play vs friends" to="." method="_on_play_vs_friends_pressed"]
+[connection signal="pressed" from="ColorRect/CenterContainer/VBoxContainer/Exit" to="." method="_on_exit_pressed"]
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

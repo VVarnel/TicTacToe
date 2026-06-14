@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://b62e1lixd8hdw"]
+
+[ext_resource type="Texture2D" uid="uid://b02u43ptx6kjf" path="res://Assets/cross.png" id="1_cf2fd"]
+[ext_resource type="Script" uid="uid://csimlww1ic51h" path="res://main_menu_drop_cross.gd" id="1_gvali"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_cf2fd"]
+bounce = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gvali"]
+size = Vector2(123.03659, 14.849245)
+
+[node name="CrossBody" type="RigidBody2D" unique_id=88042374]
+physics_material_override = SubResource("PhysicsMaterial_cf2fd")
+script = ExtResource("1_gvali")
+
+[node name="Cross" type="Sprite2D" parent="." unique_id=1044041323]
+texture = ExtResource("1_cf2fd")
+
+[node name="CrossCollision45" type="CollisionShape2D" parent="." unique_id=884479706]
+position = Vector2(-0.7500002, -0.25000018)
+rotation = 0.7853982
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_gvali")
+
+[node name="CrossCollisionMinus45" type="CollisionShape2D" parent="." unique_id=265905843]
+position = Vector2(-0.7500002, -0.25000018)
+rotation = -0.7853982
+scale = Vector2(0.9999999, 0.9999999)
+shape = SubResource("RectangleShape2D_gvali")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1998364682]
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

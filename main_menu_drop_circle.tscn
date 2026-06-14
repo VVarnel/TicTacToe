@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://c6s6mebm4q6eo"]
+
+[ext_resource type="Texture2D" uid="uid://dy1txa4iw2ldj" path="res://Assets/circle.png" id="1_lj4np"]
+[ext_resource type="Script" uid="uid://nnxy1yhji5gf" path="res://main_menu_drop_circle.gd" id="1_npysl"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_kye3x"]
+bounce = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gfvy2"]
+radius = 51.1957
+
+[node name="CircleBody" type="RigidBody2D" unique_id=88042374]
+physics_material_override = SubResource("PhysicsMaterial_kye3x")
+script = ExtResource("1_npysl")
+
+[node name="Circle" type="Sprite2D" parent="." unique_id=1044041323]
+texture = ExtResource("1_lj4np")
+
+[node name="CircleCollision" type="CollisionShape2D" parent="." unique_id=884479706]
+shape = SubResource("CircleShape2D_gfvy2")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=1998364682]
+
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
