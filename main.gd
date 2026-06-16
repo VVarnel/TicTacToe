@@ -55,11 +55,13 @@ func _input(event: InputEvent) -> void:
 						if winner == 1:
 							circle_win_count += 1
 							update_player_score()
-							$GameOverMenu.get_node("ResultLabel").text = "Player 1 Wins!"
+							$GameOverMenu/PlayerIcon.texture = load("res://Assets/circle.png")
+							$GameOverMenu/ResultLabel.text = "Wins!"
 						elif winner == -1:
 							cross_win_count += 1
 							update_player_score()
-							$GameOverMenu.get_node("ResultLabel").text = "Player 2 Wins!"
+							$GameOverMenu/PlayerIcon.texture = load("res://Assets/cross.png")
+							$GameOverMenu/ResultLabel.text = "Wins!"
 					#check if the boared has been filed
 					elif moves == 9:
 						get_tree().paused = true

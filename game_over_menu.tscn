@@ -39,13 +39,20 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tg6a4")
 
+[node name="PlayerIcon" type="TextureRect" parent="." unique_id=162231367]
+offset_left = 202.0
+offset_top = 208.0
+offset_right = 243.0
+offset_bottom = 249.0
+expand_mode = 2
+
 [node name="ResultLabel" type="Label" parent="." unique_id=1101966795]
 offset_left = 166.5
 offset_top = 200.0
 offset_right = 433.5
 offset_bottom = 258.0
 theme_override_font_sizes/font_size = 40
-text = "Player 1 Wins!"
+text = "Wins!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
