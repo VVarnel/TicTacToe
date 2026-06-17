@@ -22,6 +22,7 @@ var diagonal2_sum: int
 var score_label_Cross
 var score_label_Circle
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	board_size = $Board.texture.get_width()
@@ -38,50 +39,139 @@ func _process(delta: float) -> void:
 	pass
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			#check if mouse is on the board
-			if event.position.x < board_size:
-				#convert mouse into grid location
-				grid_pos = Vector2i(event.position / cell_size)
-				if grid_data[grid_pos.y][grid_pos.x] == 0:
-					moves += 1
-					grid_data[grid_pos.y][grid_pos.x] = player
-					#place that players marker
-					create_marker(player, grid_pos * cell_size + Vector2i(cell_size / 2, cell_size / 2))
-					if check_win() != 0:
-						get_tree().paused = true
-						$GameOverMenu.show()
-						if winner == 1:
-							circle_win_count += 1
-							update_player_score()
-							$GameOverMenu/PlayerIcon.texture = load("res://Assets/circle.png")
-							$GameOverMenu/ResultLabel.text = "Wins!"
-						elif winner == -1:
-							cross_win_count += 1
-							update_player_score()
-							$GameOverMenu/PlayerIcon.texture = load("res://Assets/cross.png")
-							$GameOverMenu/ResultLabel.text = "Wins!"
-					#check if the boared has been filed
-					elif moves == 9:
-						get_tree().paused = true
-						$GameOverMenu.show()
-						$GameOverMenu.get_node("ResultLabel").text = "It's a Tie"
-					player *= -1
-					#update the panel marker
-					temp_marker.queue_free()
-					create_marker(player, player_panel_pos + Vector2i(cell_size / 2, cell_size / 2), true)
-					print(grid_data)
+	if not is_left_click(event):
+		return
+		
+	if not is_board_click(event.position):
+		return
+	
+	var clicked_cell := get_grid_pos(event.position)
+	
+	if not is_cell_empty(clicked_cell):
+		return
+	
+	play_turn(clicked_cell)
+	
+	
+func is_left_click(event: InputEvent) -> bool:
+	return event is InputEventMouseButton \
+	and event.button_index == MOUSE_BUTTON_LEFT \
+	and event.pressed
+
+func is_board_click(mouse_pos: Vector2) -> bool:
+	return mouse_pos.x < board_size
+	
+func get_grid_pos(mouse_pos: Vector2) -> Vector2i:
+	return Vector2i(mouse_pos / cell_size)
+
+func is_cell_empty(pos: Vector2i) -> bool:
+	return grid_data[pos.y][pos.x] == 0
+	
+func play_turn(pos: Vector2i) -> void:
+	place_move(pos)
+	
+	if game_end_check():
+		return
+	
+	switch_player()
+	update_turn_marker()
+	
+	if not GameSettings.ai_easy and not GameSettings.ai_normal and not GameSettings.ai_hard:
+		return
+		
+	if GameSettings.ai_easy == true:
+		place_move(get_node("AI").random_free_cell())
+	
+	elif GameSettings.ai_normal == true:
+		if get_node("AI").winning_cell() != Vector2i(-1,-1):
+			place_move(get_node("AI").winning_cell())
+			
+		elif get_node("AI").blocking_cell() != Vector2i(-1, -1):
+			place_move(get_node("AI").blocking_cell())
+			
+		else:
+			place_move(get_node("AI").random_free_cell())		
+	
+	elif GameSettings.ai_hard == true:
+		place_move(get_node("AI").best_moves())
+	
+	if game_end_check():
+		return
+	
+	switch_player()
+	update_turn_marker()
+	
+func game_end_check() -> bool:
+	var result := check_win()
+	
+	if result != 0:
+		end_game(result)
+		return true
+	
+	if moves == 9:
+		end_tie()
+		return true
+	
+	return false
+
+
+func place_move(pos: Vector2i) -> void:
+	moves += 1
+	grid_data[pos.y][pos.x] = player
+	create_marker(
+		player,
+		pos * cell_size + Vector2i(cell_size / 2, cell_size / 2)
+	)
+
+func end_game(result: int) -> void:
+	get_tree().paused = true
+	$GameOverMenu.show()
+	
+	if result == 1:
+		circle_win_count += 1
+		$GameOverMenu/PlayerIcon.texture = load("res://Assets/circle.png")
+		$GameOverMenu/PlayerIcon.show()
+	elif result == -1:
+		cross_win_count += 1
+		$GameOverMenu/PlayerIcon.texture = load("res://Assets/cross.png")
+
+	$GameOverMenu/ResultLabel.text = "Wins!"
+	update_player_score()
+	
+
+func end_tie() -> void:
+	get_tree().paused = true
+	$GameOverMenu.show()
+	$GameOverMenu/ResultLabel.text = "It's a Tie"
+	$GameOverMenu/PlayerIcon.texture = null
+	$GameOverMenu/PlayerIcon.hide()
+
+func switch_player() -> void:
+	player *= -1
+
+func update_turn_marker() -> void:
+	if temp_marker:
+		temp_marker.queue_free()
+		
+	create_marker(
+		player,
+		player_panel_pos + Vector2i(cell_size / 2, cell_size/ 2),
+		true
+	)
 
 func new_game():
 	$Confetti_CanvasLayer/Confetti_green_left.emitting = false
 	$Confetti_CanvasLayer/Confetti_green_right.emitting = false
 	$Confetti_CanvasLayer/Confetti_red_left.emitting = false
 	$Confetti_CanvasLayer/Confetti_red_right.emitting = false
+	#$GameOverMenu/PlayerIcon.texture = null
+	#$GameOverMenu/PlayerIcon.hide()
+	
+	
 	
 	player = 1
 	winner = 0
-	moves = 0	
+	moves = 0
 	
 	grid_data = [
 		[0,0,0],
@@ -118,7 +208,9 @@ func create_marker(player, position, temp = false):
 		add_child(cross)
 		if temp: temp_marker = cross
 
-func check_win():
+
+
+func check_win() -> int:
 	#add up marker in each row, column and diagonal
 	for i in len(grid_data):
 		row_sum = grid_data[i][0] + grid_data[i][1] + grid_data[i][2]

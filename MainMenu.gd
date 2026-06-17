@@ -2,27 +2,49 @@ extends Control
 
 @export var sprite_spawn_scenes: Array[PackedScene]
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-func play_vs_friends():
+func Scene_change_to_game():
 	get_tree().change_scene_to_file(
 		'res://main.tscn'
 	)
+	
 func exit_game():
 	get_tree().quit()
 
 func _on_play_vs_friends_pressed() -> void:
-	play_vs_friends()
+	GameSettings.ai_easy = false
+	GameSettings.ai_normal = false
+	GameSettings.ai_hard = false
+	Scene_change_to_game()
 	
 func _on_exit_pressed() -> void:
 	exit_game()
 
+func _on_play_vs_bots_pressed() -> void:
+	$ColorRect/CenterContainer/VBoxContainer/Play_vs_bots/VBoxContainer.visible = \
+	!$ColorRect/CenterContainer/VBoxContainer/Play_vs_bots/VBoxContainer.visible
+
+	
+
+func _on_easy_pressed() -> void:
+	GameSettings.ai_easy = true
+	GameSettings.ai_normal = false
+	GameSettings.ai_hard = false
+	Scene_change_to_game()
+
+func _on_normal_pressed() -> void:
+	GameSettings.ai_easy = false
+	GameSettings.ai_normal = true
+	GameSettings.ai_hard = false
+	Scene_change_to_game()
+
+func _on_hard_pressed() -> void:
+	GameSettings.ai_easy = false
+	GameSettings.ai_normal = false
+	GameSettings.ai_hard = true
+	Scene_change_to_game()
+	
+	
+	
 #################################################
 #Sprite Spawner
 #################################################

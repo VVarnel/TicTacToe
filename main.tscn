@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://c5cs5h88abqqy" path="res://game_over_menu.tscn" id="5_lquwl"]
 [ext_resource type="Texture2D" uid="uid://dy1txa4iw2ldj" path="res://Assets/circle.png" id="6_272bh"]
 [ext_resource type="Texture2D" uid="uid://b02u43ptx6kjf" path="res://Assets/cross.png" id="7_5vw27"]
+[ext_resource type="Script" uid="uid://bha0gfchbclu2" path="res://AI.gd" id="8_5vw27"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1bvp3"]
 bg_color = Color(0, 0.6666667, 0.8039216, 1)
@@ -291,6 +292,9 @@ theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_272bh")
 theme_override_styles/hover = SubResource("StyleBoxFlat_5vw27")
 text = "Back to menu"
+
+[node name="AI" type="Node" parent="." unique_id=583785574]
+script = ExtResource("8_5vw27")
 
 [connection signal="restart" from="GameOverMenu" to="." method="_on_game_over_menu_restart"]
 [connection signal="visibility" from="GameOverMenu" to="." method="_on_game_over_menu_visibility"]
