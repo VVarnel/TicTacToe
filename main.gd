@@ -134,7 +134,8 @@ func end_game(result: int) -> void:
 	elif result == -1:
 		cross_win_count += 1
 		$GameOverMenu/PlayerIcon.texture = load("res://Assets/cross.png")
-
+		$GameOverMenu/PlayerIcon.show()
+		
 	$GameOverMenu/ResultLabel.text = "Wins!"
 	update_player_score()
 	
